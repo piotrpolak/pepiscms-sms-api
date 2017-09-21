@@ -1,0 +1,13 @@
+app/vendor/
+app/.htaccess
+app/index.php
+app/install.php
+app/robots.txt
+app/theme/
+app/application/
+.idea/
+mysql/
+
+
+# just for now
+app/composer.lock

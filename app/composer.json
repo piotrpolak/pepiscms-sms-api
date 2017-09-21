@@ -1,0 +1,21 @@
+{
+  "name": "piotrpolak/sms-api-cms-client",
+  "type": "project",
+  "license": "Proprietary",
+  "authors": [
+    {
+      "name": "Piotr Polak",
+      "email": "piotr@polak.ro"
+    }
+  ],
+  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@bitbucket.org:ppolak/pepiscms.git"
+    }
+  ],
+  "require": {
+    "pepis/pepiscms": "dev-master"
+  }
+}

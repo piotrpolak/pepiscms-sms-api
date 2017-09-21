@@ -1,0 +1,37 @@
+version: '3'
+services:
+  web:
+    image: tutum/apache-php
+    environment:
+      ALLOW_OVERRIDE: "true"
+      PEPIS_CMS_DATABASE_CONFIG_TYPE: native
+      PEPIS_CMS_DATABASE_HOSTNAME: db
+      PEPIS_CMS_DATABASE_USERNAME: pepiscms
+      PEPIS_CMS_DATABASE_PASSWORD: pepiscms
+      PEPIS_CMS_DATABASE_DATABASE: pepiscms
+      PEPIS_CMS_AUTH_DRIVER: native
+      PEPIS_CMS_AUTH_EMAIL: piotr@polak.ro
+      PEPIS_CMS_AUTH_PASSWORD: demodemo
+      PEPIS_CMS_SITE_EMAIL: piotr@polak.ro
+    ports:
+      - "80:80"
+    links:
+      - db
+    volumes:
+      - ./app:/app
+      - /home/${USER}/.ssh/id_rsa /root/.ssh/id_rsa
+    command: bash "/run.sh"
+
+
+  db:
+    image: mariadb
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: pepiscms
+      MYSQL_PASSWORD: pepiscms
+      MYSQL_DATABASE: pepiscms
+    ports:
+      - "3306:3306"
