@@ -5,6 +5,7 @@ app/install.php
 app/robots.txt
 app/theme/
 app/application/
+app/uploads/
 .idea/
 mysql/
 
