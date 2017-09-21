@@ -1,5 +1,7 @@
 FROM tutum/apache-php
 
+ENV ALLOW_OVERRIDE="true"
+
 ADD ./known_hosts /root/.ssh/known_hosts
 ADD ./install.sh /install.sh
 
