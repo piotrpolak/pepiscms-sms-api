@@ -37,4 +37,12 @@ Please note that you will not be able to build this project without having acces
     ```bash
     docker rmi $(docker images -q)
     ```
+    
+* Reinitialize everything
+    ```bash
+    docker-compose down; docker-compose kill; \
+    docker rmi pepiscmssmsapi_web; \
+    sudo rm -rf mysql/ app/ && git checkout app/
+    docker-compose up
+    ```
 
