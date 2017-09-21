@@ -7,7 +7,6 @@ do
 done
 
 composer install && \
-cp vendor/pepis/pepiscms/install.php ./install.php && \
-sed -i "/\$core_path =.*/c\$core_path = './vendor/pepis/pepiscms/';" ./install.php
-
-/run.sh
+    cp vendor/pepis/pepiscms/install.php ./install.php && \
+    sed -i "/\$core_path =.*/c\$core_path = './vendor/pepis/pepiscms/';" ./install.php && \
+    /run.sh
