@@ -29,20 +29,30 @@ Please note that you will not be able to build this project without having acces
 
 
 * Delete all docker containers
+
     ```bash
     docker rm $(docker ps -a -q)
     ```
 
 * Delete all docker images
+
     ```bash
     docker rmi $(docker images -q)
     ```
     
 * Reinitialize everything
+
     ```bash
     docker-compose down; docker-compose kill; \
     docker rmi pepiscmssmsapi_web; \
     sudo rm -rf mysql/ app/ && git checkout app/
     docker-compose up
     ```
+    
+* Get back write rights to app
+
+    ```bash
+    sudo chown -R ${USER}:${USER} app/
+    ```
+
 
