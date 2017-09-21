@@ -1,7 +1,6 @@
-version: '3'
+version: '2'
 services:
   web:
-    image: tutum/apache-php
     environment:
       ALLOW_OVERRIDE: "true"
       PEPIS_CMS_DATABASE_CONFIG_TYPE: native
@@ -19,9 +18,10 @@ services:
       - db
     volumes:
       - ./app:/app
-      - /home/${USER}/.ssh/id_rsa /root/.ssh/id_rsa
-    command: bash "/run.sh"
-
+      - /home/${USER}/.ssh/id_rsa:/root/.ssh/id_rsa
+      - ./web/known_hosts:/root/.ssh/known_hosts
+    build: ./web/
+    command: /install.sh
 
   db:
     image: mariadb

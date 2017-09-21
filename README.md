@@ -1,22 +1,15 @@
 # PepisCMS SMS API demo
 
-Please note that you will not be able to build this project without having access to a private git@bitbucket.org:ppolak/pepiscms.git repository!
+Please note that you will not be able to build this project without having access to a private
+[git@bitbucket.org:ppolak/pepiscms.git](ssh://git@bitbucket.org:ppolak/pepiscms.git) repository!
 
 # Prerequisites
  * Docker
  * Docker compose
- * Local composer (will be removed in future)
+ * Access to [git@bitbucket.org:ppolak/pepiscms.git](ssh://git@bitbucket.org:ppolak/pepiscms.git)
+ * SSH keys generated and linked with a BitBucket account
 
 ## Setup steps
-
-* Download dependencies (currently locally):
-
-    ```bash
-    pushd app/ && composer install && \
-    cp vendor/pepis/pepiscms/install.php ./install.php && \
-    sed -i "/\$core_path =.*/c\$core_path = './vendor/pepis/pepiscms/';" ./install.php && \
-    popd
-    ```
 
 * Stat the environment:
 
@@ -31,3 +24,17 @@ Please note that you will not be able to build this project without having acces
     ```bash
     docker-compose down && docker-compose kill
     ```
+    
+## Additional commands
+
+
+* Delete all docker containers
+    ```bash
+    docker rm $(docker ps -a -q)
+    ```
+
+* Delete all docker images
+    ```bash
+    docker rmi $(docker images -q)
+    ```
+
