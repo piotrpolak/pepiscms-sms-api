@@ -1,7 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once module_path('crud') . '/libraries/AdminCRUDController.php';
-
 /**
  * sms_api admin controller
  *
