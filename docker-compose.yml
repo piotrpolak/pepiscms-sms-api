@@ -18,7 +18,6 @@ services:
     volumes:
       - ./app:/app
       - /home/${USER}/.ssh/id_rsa:/root/.ssh/id_rsa
-      - ./web/known_hosts:/root/.ssh/known_hosts
     build: ./web/
     command: /install.sh
 
