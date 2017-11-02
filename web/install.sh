@@ -6,7 +6,7 @@ do
     sleep 1
 done
 
-composer install && \
+composer install --prefer-dist && \
     cp vendor/pepis/pepiscms/install.php ./install.php && \
-    sed -i "/\$vendor_path =.*/c\$$vendor_path = './vendor/';" ./install.php && \
+    sed -i "/\$vendor_path =.*/c\$vendor_path = './vendor/';" ./install.php && \
     /run.sh
