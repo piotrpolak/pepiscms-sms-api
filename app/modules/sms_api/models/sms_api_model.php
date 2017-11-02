@@ -8,14 +8,36 @@
  */
 class Sms_api_model extends Array_model
 {
+    private $feedUrl;
+
+    /**
+     * @return mixed
+     */
+    public function getFeedUrl()
+    {
+        return $this->feedUrl;
+    }
+
+    /**
+     * @param mixed $feedUrl
+     */
+    public function setFeedUrl($feedUrl)
+    {
+        $this->feedUrl = $feedUrl;
+    }
+
 
     public function getBasicFeed($extra_param)
     {
-        return array((object)array('id' => 1,
-            'address' => '500500500',
-            'body' => 'Hello World!',
-            'is_incoming' => true,
-            'date' => date('Y-m-d H:i:s'),
-            'date_sent' => date('Y-m-d H:i:s')));
+        if (!$this->feedUrl) {
+            throw new LogicException('feedUrl should be specified for Sms_api_model');
+        }
+        $contents = file_get_contents($this->feedUrl);
+        return json_decode($contents);
+    }
+
+    public function sendMessage($address, $message)
+    {
+        return TRUE;
     }
 }

@@ -22,8 +22,11 @@ class Sms_apiAdmin extends AdminCRUDController
         // Loading module language
         $this->load->moduleLanguage($module_name, $module_name);
 
+        $this->load->moduleConfig($module_name);
+
         // Loading module main model
         $this->load->moduleModel($module_name, $model_name);
+        $this->$model_name->setFeedUrl($this->config->item('sms_api_feed_url'));
         $this->setFeedObject($this->$model_name);
 
         // Setting labels, please note the convention
@@ -88,77 +91,49 @@ class Sms_apiAdmin extends AdminCRUDController
             }
         }
 
-
-        $definition = array(
-            'address' => array(
-                'filter_type' => DataGrid::FILTER_BASIC,
-                'show_in_grid' => FALSE,
-                'show_in_form' => TRUE,
-                'input_type' => FormBuilder::TEXTFIELD,
-                'validation_rules' => 'max_length[13]',
-            ),
-            'date' => array(
-                'show_in_grid' => TRUE,
-                'show_in_form' => FALSE,
-                'input_type' => FormBuilder::TIMESTAMP,
-                'validation_rules' => '',
-                'input_default_value' => date('Y-m-d H:i:s'),
-            ),
-            'date_sent' => array(
-                'show_in_grid' => TRUE,
-                'show_in_form' => FALSE,
-                'input_type' => FormBuilder::TIMESTAMP,
-                'validation_rules' => '',
-                'input_default_value' => date('Y-m-d H:i:s'),
-            ),
-            'body' => array(
-                'filter_type' => DataGrid::FILTER_BASIC,
-                'show_in_grid' => TRUE,
-                'show_in_form' => TRUE,
-                'input_type' => FormBuilder::TEXTAREA,
-                'validation_rules' => 'max_length[480]',
-            ),
-            'is_incoming' => array(
-                'filter_type' => DataGrid::FILTER_SELECT,
-                'show_in_grid' => TRUE,
-                'show_in_form' => FALSE,
-                'input_type' => FormBuilder::CHECKBOX,
-                'validation_rules' => 'numeric',
-                'values' => array(
+        $definition = CrudDefinitionBuilder::create()
+            ->withField('address')
+                ->withFilterType(DataGrid::FILTER_BASIC)
+                ->withShowInGrid(FALSE)
+                ->withShowInForm(TRUE)
+                ->withInputType(FormBuilder::TEXTFIELD)
+                ->addValidationRule('max_length[13]')
+            ->end()
+            ->withField('date')
+                ->withFilterType(DataGrid::FILTER_DATE)
+                ->withShowInGrid(TRUE)
+                ->withShowInForm(FALSE)
+                ->withInputType(FormBuilder::TEXTFIELD)
+            ->end()
+            ->withField('date_sent')
+                ->withShowInGrid(TRUE)
+                ->withShowInForm(FALSE)
+                ->withInputType(FormBuilder::TEXTFIELD)
+            ->end()
+                ->withField('body')
+                ->withFilterType(DataGrid::FILTER_BASIC)
+                ->withShowInGrid(TRUE)
+                ->withShowInForm(TRUE)
+                ->withInputType(FormBuilder::TEXTAREA)
+                ->addValidationRule('max_length[480]')
+            ->end()
+            ->withField('is_incoming')
+                ->withFilterType(DataGrid::FILTER_SELECT)
+                ->withValues(array(
                     0 => $this->lang->line('global_dialog_no'),
                     1 => $this->lang->line('global_dialog_yes')
-                ),
-                'filter_values' => array(
+                ))
+                ->withFilterValues(array(
                     0 => $this->lang->line('global_dialog_no'),
                     1 => $this->lang->line('global_dialog_yes')
-                ),
-            ),
-
-        );
-
-
-        // Getting translations and setting input groups
-        foreach ($definition as $field => &$def) {
-            $key = isset($def['field']) ? $def['field'] : $field;
-
-            // Getting label
-            if (!isset($def['label'])) {
-                $def['label'] = $this->lang->line($module_name . '_' . $key);
-            }
-
-            // Getting description
-            if (!isset($def['description'])) {
-                $description = $this->lang->line($module_name . '_' . $key . '_description', FALSE);
-                if ($description !== FALSE) {
-                    $def['description'] = $description;
-                }
-            }
-
-            // Setting default input group
-            if (!isset($def['input_group']) || !$def['input_group']) {
-                $def['input_group'] = 'default';
-            }
-        }
+                ))
+                ->withShowInGrid(TRUE)
+                ->withShowInForm(FALSE)
+                ->withInputType(FormBuilder::TEXTAREA)
+                ->withNoValidationRules()
+            ->end()
+            ->withImplicitTranslations($module_name, $this->lang)
+            ->build();
 
         // Here we go!
         $this->setDefinition($definition);

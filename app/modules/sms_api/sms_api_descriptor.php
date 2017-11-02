@@ -2,20 +2,21 @@
 
 /**
  * sms_api descriptor class
- * 
+ *
  * @author piotr@polak.ro
  * @date 2017-09-22
  * @classTemplateVersion 20150401
  */
-class Sms_apiDescriptor extends ModuleDescriptor {
+class Sms_apiDescriptor extends ModuleDescriptor
+{
 
     /**
      * Cached variable
-     * 
-     * @var String 
+     *
+     * @var String
      */
     private $module_name;
-    
+
     /**
      * Default constructor
      */
@@ -23,9 +24,9 @@ class Sms_apiDescriptor extends ModuleDescriptor {
     {
         parent::__construct();
         $this->module_name = strtolower(str_replace('Descriptor', '', __CLASS__));
-        get_instance()->load->moduleLanguage( $this->module_name);
+        get_instance()->load->moduleLanguage($this->module_name);
     }
-    
+
     /**
      * Returns module name
      */
@@ -43,8 +44,7 @@ class Sms_apiDescriptor extends ModuleDescriptor {
         get_instance()->load->moduleLanguage($this->module_name);
         $description_label = $this->module_name . '_module_description';
         $description = get_instance()->lang->line($this->module_name . '_module_description');
-        if( $description == $description_label )
-        {
+        if ($description == $description_label) {
             return '';
         }
 
@@ -57,8 +57,7 @@ class Sms_apiDescriptor extends ModuleDescriptor {
     public function onInstall()
     {
         $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/install.sql';
-        if (!file_exists($path))
-        {
+        if (!file_exists($path)) {
             return FALSE;
         }
         get_instance()->db->query(file_get_contents($path));
@@ -71,21 +70,20 @@ class Sms_apiDescriptor extends ModuleDescriptor {
     public function onUninstall()
     {
         $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/uninstall.sql';
-        if (!file_exists($path))
-        {
+        if (!file_exists($path)) {
             return FALSE;
         }
         get_instance()->db->query(file_get_contents($path));
         return TRUE;
     }
-    
+
     /**
      * Returns the list of module submenu elements
      */
     public function getAdminSubmenuElements($language)
     {
         return FALSE;
-        
+
 //        return array(
 //			array(
 //				'controller' => $this->module_name,
@@ -116,5 +114,16 @@ class Sms_apiDescriptor extends ModuleDescriptor {
 //            ),
 //        );
     }
+
+    public function getConfigVariables()
+    {
+        return array(
+            'sms_api_feed_url' => array(
+                'label' => 'Feed URL',
+                'input_default_value' => 'http://127.0.0.1/modules/sms_api/resources/sample.json',
+            ),
+        );
+    }
+
 
 }
