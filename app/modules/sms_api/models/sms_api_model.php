@@ -1,17 +1,17 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * sms_api model
- *
- * @author piotr@polak.ro
- * @date 2017-09-22
+ * Class Sms_api_model
  */
 class Sms_api_model extends Array_model
 {
+    /**
+     * @var string
+     */
     private $feedUrl;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFeedUrl()
     {
@@ -19,14 +19,16 @@ class Sms_api_model extends Array_model
     }
 
     /**
-     * @param mixed $feedUrl
+     * @param string $feedUrl
      */
     public function setFeedUrl($feedUrl)
     {
         $this->feedUrl = $feedUrl;
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function getBasicFeed($extra_param)
     {
         if (!$this->feedUrl) {
@@ -36,6 +38,13 @@ class Sms_api_model extends Array_model
         return json_decode($contents);
     }
 
+    /**
+     * Send message to the specified address (phone number)
+     *
+     * @param $address
+     * @param $message
+     * @return bool
+     */
     public function sendMessage($address, $message)
     {
         return TRUE;

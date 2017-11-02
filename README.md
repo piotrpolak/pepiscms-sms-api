@@ -9,6 +9,12 @@ Please note that you will not be able to build this project without having acces
  * Access to [git@bitbucket.org:ppolak/pepiscms.git](ssh://git@bitbucket.org:ppolak/pepiscms.git)
  * SSH keys generated and linked with a BitBucket account
 
+# Preview
+
+![List](screens/screen-list.png)
+
+![Send message](screens/screen-send-message.png)
+
 ## Setup steps
 
 * Stat the environment:

@@ -15,29 +15,21 @@ class Sms_apiAdmin extends AdminCRUDController
     {
         parent::__construct();
 
-        // Getting module and model name from class name
         $module_name = $this->getModuleName();
         $model_name = $this->getModelName();
 
-        // Loading module language
         $this->load->moduleLanguage($module_name, $module_name);
-
         $this->load->moduleConfig($module_name);
-
-        // Loading module main model
         $this->load->moduleModel($module_name, $model_name);
+
         $this->$model_name->setFeedUrl($this->config->item('sms_api_feed_url'));
         $this->setFeedObject($this->$model_name);
 
-        // Setting labels, please note the convention
         $this->setPageTitle($this->lang->line($module_name . '_module_name'));
         $this->setAddNewItemLabel($this->lang->line($module_name . '_add'));
-
-
         $this->setTooltipTextForIndex($this->lang->line($module_name . '_index_tip'));
         $this->setTooltipTextForEdit($this->lang->line($module_name . '_edit_tip'));
 
-        // Setting crud properties, these are optional. Default TRUE all
         $this->setDeletable(FALSE);
         $this->setAddable(TRUE);
         $this->setEditable(FALSE);
@@ -57,7 +49,7 @@ class Sms_apiAdmin extends AdminCRUDController
         $this->setMetaDescriptionPattern('{address}', array($this, '_fb_format_meta_description'));
         $this->setOrderable(FALSE);
 
-        $this->datagrid->setRowCssClassFormatingFunction(function ($line) {
+        $this->datagrid->setRowCssClassFormattingFunction(function ($line) {
             if ($line->is_incoming == 1) {
                 return DataGrid::ROW_COLOR_BLUE;
             } else {
@@ -66,26 +58,19 @@ class Sms_apiAdmin extends AdminCRUDController
         });
 
 
-        $this->datagrid->setItemsPerPage(300);
+        $this->datagrid->setItemsPerPage(30);
         $this->datagrid->addFilter($this->lang->line($module_name . '_date') . ' (' . $this->lang->line('crud_label_from') . ')', 'date', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL);
         $this->datagrid->addFilter($this->lang->line($module_name . '_date') . ' (' . $this->lang->line('crud_label_to') . ')', 'date', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_LESS_OR_EQUAL);
-        $this->datagrid->addFilter($this->lang->line($module_name . '_date_sent') . ' (' . $this->lang->line('crud_label_from') . ')', 'date_sent', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_GREATER_OR_EQUAL);
-        $this->datagrid->addFilter($this->lang->line($module_name . '_date_sent') . ' (' . $this->lang->line('crud_label_to') . ')', 'date_sent', DataGrid::FILTER_DATE, FALSE, DataGrid::FILTER_CONDITION_LESS_OR_EQUAL);
 
-
-        // If not set, then DefaultFormRenderer is used
-        // You can even use your own form templates, see views/templates
         $this->formbuilder->setRenderer(new FloatingFormRenderer());
         $this->formbuilder->setApplyButtonEnabled(TRUE);
 
 
-        // Formbuilder callbacks
         $callbacks = array(
             '_fb_callback_on_save' => FormBuilder::CALLBACK_ON_SAVE,
         );
         // Assigning every single callback
         foreach ($callbacks as $callback_method_name => $callback_type) {
-            // Attaching only when are callable
             if (is_callable(array($this, $callback_method_name))) {
                 $this->formbuilder->setCallback(array($this, $callback_method_name), $callback_type);
             }
@@ -97,24 +82,26 @@ class Sms_apiAdmin extends AdminCRUDController
                 ->withShowInGrid(FALSE)
                 ->withShowInForm(TRUE)
                 ->withInputType(FormBuilder::TEXTFIELD)
+                ->addValidationRule('required')
+                ->addValidationRule('valid_phone_number')
                 ->addValidationRule('max_length[13]')
             ->end()
             ->withField('date')
-                ->withFilterType(DataGrid::FILTER_DATE)
                 ->withShowInGrid(TRUE)
                 ->withShowInForm(FALSE)
                 ->withInputType(FormBuilder::TEXTFIELD)
             ->end()
-            ->withField('date_sent')
+                ->withField('date_sent')
                 ->withShowInGrid(TRUE)
                 ->withShowInForm(FALSE)
                 ->withInputType(FormBuilder::TEXTFIELD)
             ->end()
-                ->withField('body')
+            ->withField('body')
                 ->withFilterType(DataGrid::FILTER_BASIC)
                 ->withShowInGrid(TRUE)
                 ->withShowInForm(TRUE)
                 ->withInputType(FormBuilder::TEXTAREA)
+                ->addValidationRule('required')
                 ->addValidationRule('max_length[480]')
             ->end()
             ->withField('is_incoming')
@@ -135,13 +122,12 @@ class Sms_apiAdmin extends AdminCRUDController
             ->withImplicitTranslations($module_name, $this->lang)
             ->build();
 
-        // Here we go!
         $this->setDefinition($definition);
-        $this->formbuilder->setSubmitLabel($this->lang->line('sms_api_submit_label'));
+        $this->formbuilder->setSubmitLabel($this->lang->line($module_name . '_submit_label'));
     }
 
     /**
-     * Description format callback
+     * Description formatting callback.
      *
      * @param mixed $content Value of the element
      * @param object $line Object representing database row
@@ -156,7 +142,8 @@ class Sms_apiAdmin extends AdminCRUDController
 
 
     /**
-     * Must overwrite the save procedure and return true or false
+     * Must overwrite the save procedure and return true or false.
+     *
      * @param array $data_array associative array made of filtered POST variables
      * @return bool
      */
@@ -166,7 +153,11 @@ class Sms_apiAdmin extends AdminCRUDController
             throw new UnexpectedValueException('Item modification is not supported');
         }
 
-
-        return $this->Sms_api_model->sendMessage($data_array['address'], $data_array['body']);
+        if ($this->Sms_api_model->sendMessage($data_array['address'], $data_array['body'])) {
+            Logger::info('Message sent successfully. address: ' . $data_array['address'] . ' message:' . $data_array['body'], 'sms');
+            return TRUE;
+        }
+        Logger::error('Unable to send message. address: ' . $data_array['address'] . ' message:' . $data_array['body'], 'sms');
+        return FALSE;
     }
 }
