@@ -2,9 +2,6 @@
 
 /**
  * sms_api admin controller
- *
- * @author piotr@polak.ro
- * @date 2017-09-01
  */
 class Sms_apiAdmin extends AdminCRUDController
 {
@@ -23,6 +20,7 @@ class Sms_apiAdmin extends AdminCRUDController
         $this->load->moduleModel($module_name, $model_name);
 
         $this->$model_name->setFeedUrl($this->config->item('sms_api_feed_url'));
+        $this->$model_name->setSendUrl($this->config->item('sms_api_send_url'));
         $this->setFeedObject($this->$model_name);
 
         $this->setPageTitle($this->lang->line($module_name . '_module_name'));

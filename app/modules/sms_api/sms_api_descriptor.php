@@ -1,11 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * sms_api descriptor class
- *
- * @author piotr@polak.ro
- * @date 2017-09-22
- * @classTemplateVersion 20150401
+ * sms_api descriptor
  */
 class Sms_apiDescriptor extends ModuleDescriptor
 {
@@ -56,11 +52,6 @@ class Sms_apiDescriptor extends ModuleDescriptor
      */
     public function onInstall()
     {
-        $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/install.sql';
-        if (!file_exists($path)) {
-            return FALSE;
-        }
-        get_instance()->db->query(file_get_contents($path));
         return TRUE;
     }
 
@@ -69,11 +60,6 @@ class Sms_apiDescriptor extends ModuleDescriptor
      */
     public function onUninstall()
     {
-        $path = get_instance()->load->resolveModuleDirectory($this->module_name, FALSE) . '/resources/uninstall.sql';
-        if (!file_exists($path)) {
-            return FALSE;
-        }
-        get_instance()->db->query(file_get_contents($path));
         return TRUE;
     }
 
@@ -82,16 +68,14 @@ class Sms_apiDescriptor extends ModuleDescriptor
      */
     public function getAdminSubmenuElements($language)
     {
-        return FALSE;
-
-//        return array(
-//			array(
-//				'controller' => $this->module_name,
-//				'method' => 'edit',
-//				'label' => get_instance()->lang->line($this->module_name.'_add'),
-//				'description' => ''
-//			),
-//		);
+        return array(
+            array(
+                'controller' => $this->module_name,
+                'method' => 'edit',
+                'label' => get_instance()->lang->line($this->module_name . '_add'),
+                'description' => ''
+            ),
+        );
     }
 
     /**
@@ -100,19 +84,6 @@ class Sms_apiDescriptor extends ModuleDescriptor
     public function getAdminDashboardElements($language)
     {
         return FALSE;
-
-//        return array(
-//            array(
-//                'controller' => $this->module_name,
-//                'method' => 'edit',
-//                'label' => get_instance()->lang->line($this->module_name . '_add'),
-//                'description' => '',
-//                //'icon' => module_resources_url($this->module_name).'cache_32.png', //module_icon_url($this->module_name),
-//                //'url' => 'http://www.disneyland.pl/', // URL can be used instead of controller and method
-//                //'target' => '_blank',
-//                //'group' => 'dashboard_group_default',
-//            ),
-//        );
     }
 
     public function getConfigVariables()
@@ -120,10 +91,13 @@ class Sms_apiDescriptor extends ModuleDescriptor
         return array(
             'sms_api_feed_url' => array(
                 'label' => 'Feed URL',
-                'input_default_value' => 'http://127.0.0.1/modules/sms_api/resources/sample.json',
+                'input_default_value' => 'http://127.0.0.1/modules/sms_api/resources/sample/api/SmsInbox.json',
+            ),
+            'sms_api_send_url' => array(
+                'label' => 'Feed URL',
+                'input_default_value' => 'http://127.0.0.1/modules/sms_api/resources/sample/api/SmsSend.json',
             ),
         );
     }
-
 
 }

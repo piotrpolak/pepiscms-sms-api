@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Class Sms_api_model
+ * Sms_api_model
  */
 class Sms_api_model extends Array_model
 {
@@ -9,6 +9,11 @@ class Sms_api_model extends Array_model
      * @var string
      */
     private $feedUrl;
+
+    /**
+     * @var string
+     */
+    private $sendUrl;
 
     /**
      * @return string
@@ -27,6 +32,22 @@ class Sms_api_model extends Array_model
     }
 
     /**
+     * @return string
+     */
+    public function getSendUrl()
+    {
+        return $this->sendUrl;
+    }
+
+    /**
+     * @param string $sendUrl
+     */
+    public function setSendUrl($sendUrl)
+    {
+        $this->sendUrl = $sendUrl;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getBasicFeed($extra_param)
@@ -39,7 +60,7 @@ class Sms_api_model extends Array_model
     }
 
     /**
-     * Send message to the specified address (phone number)
+     * Send message to the specified address (phone number).
      *
      * @param $address
      * @param $message
@@ -47,6 +68,29 @@ class Sms_api_model extends Array_model
      */
     public function sendMessage($address, $message)
     {
-        return TRUE;
+        return $this->makePost(array(
+            'to' => $address,
+            'message' => $message
+        ), $this->sendUrl);
+    }
+
+    /**
+     * Helper method responsible for making post requests
+     * @param $data
+     * @return bool|string
+     */
+    private function makePost($data, $url)
+    {
+        $opts = array('http' =>
+            array(
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
+                'content' => http_build_query($data)
+            )
+        );
+
+        $context = stream_context_create($opts);
+
+        return file_get_contents($url, false, $context);
     }
 }
