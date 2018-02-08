@@ -1,13 +1,7 @@
 # PepisCMS SMS API demo
 
-Please note that you will not be able to build this project without having access to a private
-[git@bitbucket.org:ppolak/pepiscms.git](ssh://git@bitbucket.org:ppolak/pepiscms.git) repository!
-
 # Prerequisites
- * Docker
- * Docker compose
- * Access to [git@bitbucket.org:ppolak/pepiscms.git](ssh://git@bitbucket.org:ppolak/pepiscms.git)
- * SSH keys generated and linked with a BitBucket account
+ * Docker and Docker compose
 
 # Preview
 
