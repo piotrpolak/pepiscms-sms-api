@@ -33,6 +33,16 @@ Please note that you will not be able to build this project without having acces
     
 ## Additional commands
 
+* Reinitialize PepisCMS
+
+    ```bash
+    sudo rm -rf mysql/ \
+          app/application/config/ \
+          app/application/cache/ \
+          app/index.php app/.htaccess \
+          app/composer.lock  \
+          app/vendor/
+    ```
 
 * Delete all docker containers
 

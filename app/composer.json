@@ -12,14 +12,14 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "git@bitbucket.org:ppolak/pepiscms.git"
+      "url": "git@github.com:piotrpolak/pepiscms.git"
     },
     {
       "type": "vcs",
-      "url": "git@bitbucket.org:ppolak/pepiscms_3rdparty.git"
+      "url": "git@github.com:piotrpolak/pepiscms-3rdparty.git"
     }
   ],
   "require": {
-    "pepis/pepiscms": "dev-master"
+    "piotrpolak/pepiscms": "dev-master"
   }
 }
