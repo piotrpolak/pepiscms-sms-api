@@ -73,7 +73,8 @@ class Sms_apiDescriptor extends ModuleDescriptor
                 'controller' => $this->module_name,
                 'method' => 'edit',
                 'label' => get_instance()->lang->line($this->module_name . '_add'),
-                'description' => ''
+                'description' => '',
+                'icon_url' => module_resources_url($this->module_name) . 'send_16.png'
             ),
         );
     }
@@ -96,6 +97,22 @@ class Sms_apiDescriptor extends ModuleDescriptor
             'sms_api_send_url' => array(
                 'label' => 'Feed URL',
                 'input_default_value' => 'http://127.0.0.1/modules/sms_api/resources/sample/api/SmsSend.json',
+            ),
+            'sms_api_max_feed_results' => array(
+                'label' => 'Max fetched results',
+                'input_default_value' => 30,
+                'validation_rules' => 'required|numeric',
+            ),
+            'sms_api_cache_ttl' => array(
+                'label' => 'Cache TTL',
+                'input_default_value' => 0,
+                'validation_rules' => 'required|numeric',
+            ),
+            'sms_api_blur_message_in_datagrid' => array(
+                'label' => 'Blur messages in data grid',
+                'input_default_value' => false,
+                'validation_rules' => '',
+                'input_type' => FormBuilder::CHECKBOX,
             ),
         );
     }

@@ -21,6 +21,9 @@ class Sms_apiAdmin extends AdminCRUDController
 
         $this->$model_name->setFeedUrl($this->config->item('sms_api_feed_url'));
         $this->$model_name->setSendUrl($this->config->item('sms_api_send_url'));
+        $this->$model_name->setMaxFeedResults($this->config->item('sms_api_max_feed_results'));
+        $this->$model_name->setCacheTtl($this->config->item('sms_api_cache_ttl'));
+
         $this->setFeedObject($this->$model_name);
 
         $this->setPageTitle($this->lang->line($module_name . '_module_name'));
@@ -51,7 +54,7 @@ class Sms_apiAdmin extends AdminCRUDController
             if ($line->is_incoming == 1) {
                 return DataGrid::ROW_COLOR_BLUE;
             } else {
-                return DataGrid::ROW_COLOR_RED;
+                return DataGrid::ROW_COLOR_ORANGE;
             }
         });
 
@@ -67,12 +70,16 @@ class Sms_apiAdmin extends AdminCRUDController
         $callbacks = array(
             '_fb_callback_on_save' => FormBuilder::CALLBACK_ON_SAVE,
         );
-        // Assigning every single callback
         foreach ($callbacks as $callback_method_name => $callback_type) {
             if (is_callable(array($this, $callback_method_name))) {
                 $this->formbuilder->setCallback(array($this, $callback_method_name), $callback_type);
             }
         }
+
+        $is_incoming_values = array(
+            0 => $this->lang->line('global_dialog_no'),
+            1 => $this->lang->line('global_dialog_yes')
+        );
 
         $definition = CrudDefinitionBuilder::create()
             ->withField('address')
@@ -101,17 +108,18 @@ class Sms_apiAdmin extends AdminCRUDController
                 ->withInputType(FormBuilder::TEXTAREA)
                 ->addValidationRule('required')
                 ->addValidationRule('max_length[480]')
+                ->withGridFormattingCallback(function($value, $line) {
+                    if($this->config->item('sms_api_send_url')) {
+                        return preg_replace("/[a-zA-Z]/", '.', $value);
+                    }
+
+                    return $value;
+                })
             ->end()
             ->withField('is_incoming')
                 ->withFilterType(DataGrid::FILTER_SELECT)
-                ->withValues(array(
-                    0 => $this->lang->line('global_dialog_no'),
-                    1 => $this->lang->line('global_dialog_yes')
-                ))
-                ->withFilterValues(array(
-                    0 => $this->lang->line('global_dialog_no'),
-                    1 => $this->lang->line('global_dialog_yes')
-                ))
+                ->withValues($is_incoming_values)
+                ->withFilterValues($is_incoming_values)
                 ->withShowInGrid(TRUE)
                 ->withShowInForm(FALSE)
                 ->withInputType(FormBuilder::TEXTAREA)

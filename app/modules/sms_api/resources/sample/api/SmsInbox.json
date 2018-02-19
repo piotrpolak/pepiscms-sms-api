@@ -1,26 +1,30 @@
-[
-  {
-    "id": 1,
-    "address": "+48500500500",
-    "body": "Hello World!",
-    "is_incoming": 1,
-    "date": "2017-10-31 22:17:30",
-    "date_sent": "2017-10-31 22:16:30"
-  },
-  {
-    "id": 2,
-    "address": "+48606060060",
-    "body": "Hello World Again!!",
-    "is_incoming": 1,
-    "date": "2017-10-30 13:20:30",
-    "date_sent": "2017-10-30 13:11:00"
-  },
-  {
-    "id": 3,
-    "address": "+48707707707",
-    "body": "A sent message",
-    "is_incoming": 0,
-    "date": "2017-10-10 15:20:30",
-    "date_sent": "2017-10-10 15:11:00"
-  }
-]
+{
+  "code": 200,
+  "message": "",
+  "result": [
+    {
+      "id": 1,
+      "address": "+48500500500",
+      "body": "Hello World!",
+      "is_incoming": 1,
+      "date": "2017-10-31 22:17:30",
+      "date_sent": "2017-10-31 22:16:30"
+    },
+    {
+      "id": 2,
+      "address": "+48606060060",
+      "body": "Hello World Again!!",
+      "is_incoming": 1,
+      "date": "2017-10-30 13:20:30",
+      "date_sent": "2017-10-30 13:11:00"
+    },
+    {
+      "id": 3,
+      "address": "+48707707707",
+      "body": "A sent message",
+      "is_incoming": 0,
+      "date": "2017-10-10 15:20:30",
+      "date_sent": "2017-10-10 15:11:00"
+    }
+  ]
+}
