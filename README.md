@@ -1,6 +1,12 @@
 # PepisCMS SMS API demo
 
+SMS API client demo. See the main [CRUD controller](app/modules/sms_api/controllers/Sms_apiAdmin.php).
+
+It combines both [PepisCMS](https://github.com/piotrpolak/pepiscms) and
+[Android HTTP server](https://github.com/piotrpolak/android-http-server).
+
 # Prerequisites
+
  * Docker and Docker compose
 
 # Preview
