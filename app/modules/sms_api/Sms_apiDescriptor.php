@@ -14,7 +14,7 @@ class Sms_apiDescriptor extends ModuleDescriptor
     private $module_name;
 
     /**
-     * Default constructor
+     * @inheritdoc
      */
     public function __construct()
     {
@@ -24,7 +24,7 @@ class Sms_apiDescriptor extends ModuleDescriptor
     }
 
     /**
-     * Returns module name
+     * @inheritdoc
      */
     public function getName($language)
     {
@@ -33,7 +33,7 @@ class Sms_apiDescriptor extends ModuleDescriptor
     }
 
     /**
-     * Returns module description
+     * @inheritdoc
      */
     public function getDescription($language)
     {
@@ -48,7 +48,7 @@ class Sms_apiDescriptor extends ModuleDescriptor
     }
 
     /**
-     * Executed on installation
+     * @inheritdoc
      */
     public function onInstall()
     {
@@ -56,7 +56,7 @@ class Sms_apiDescriptor extends ModuleDescriptor
     }
 
     /**
-     * Executed on uninstall
+     * @inheritdoc
      */
     public function onUninstall()
     {
@@ -64,7 +64,7 @@ class Sms_apiDescriptor extends ModuleDescriptor
     }
 
     /**
-     * Returns the list of module submenu elements
+     * @inheritdoc
      */
     public function getAdminSubmenuElements($language)
     {
@@ -80,41 +80,40 @@ class Sms_apiDescriptor extends ModuleDescriptor
     }
 
     /**
-     * Returns the list of module landing dashboard elements
+     * @inheritdoc
      */
-    public function getAdminDashboardElements($language)
-    {
-        return FALSE;
-    }
-
     public function getConfigVariables()
     {
-        return array(
-            'sms_api_feed_url' => array(
-                'label' => 'Feed URL',
-                'input_default_value' => 'http://127.0.0.1/modules/sms_api/resources/sample/api/SmsInbox.json',
-            ),
-            'sms_api_send_url' => array(
-                'label' => 'Feed URL',
-                'input_default_value' => 'http://127.0.0.1/modules/sms_api/resources/sample/api/SmsSend.json',
-            ),
-            'sms_api_max_feed_results' => array(
-                'label' => 'Max fetched results',
-                'input_default_value' => 30,
-                'validation_rules' => 'required|numeric',
-            ),
-            'sms_api_cache_ttl' => array(
-                'label' => 'Cache TTL',
-                'input_default_value' => 0,
-                'validation_rules' => 'required|numeric',
-            ),
-            'sms_api_blur_message_in_datagrid' => array(
-                'label' => 'Blur messages in data grid',
-                'input_default_value' => false,
-                'validation_rules' => '',
-                'input_type' => FormBuilder::CHECKBOX,
-            ),
-        );
+        return CrudDefinitionBuilder::create()
+            ->withField('sms_api_feed_url')
+                ->withInputDefaultValue('http://127.0.0.1/modules/sms_api/resources/sample/api/SmsInbox.json')
+            ->end()
+            ->withField('sms_api_send_url')
+                ->withInputDefaultValue('http://127.0.0.1/modules/sms_api/resources/sample/api/SmsSend.json')
+            ->end()
+                ->withField('sms_api_max_feed_results')
+            ->withInputDefaultValue(300)
+                ->addValidationRule('required')
+                ->addValidationRule('numeric')
+            ->end()
+                ->withField('sms_api_cache_ttl')
+                ->withInputDefaultValue(10)
+                ->addValidationRule('required')
+                ->addValidationRule('numeric')
+            ->end()
+            ->withField('sms_api_blur_message_in_datagrid')
+                ->withInputType(FormBuilder::CHECKBOX)
+                ->withNoValidationRules()
+            ->end()
+            ->withImplicitTranslations($this->module_name, get_instance()->lang)
+            ->build();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isDisplayedInMenu()
+    {
+        return TRUE;
+    }
 }

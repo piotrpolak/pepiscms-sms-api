@@ -30,10 +30,12 @@ class Sms_api_model extends Array_model
 
     /**
      * @param string $feedUrl
+     * @return Sms_api_model
      */
     public function setFeedUrl($feedUrl)
     {
         $this->feedUrl = $feedUrl;
+        return $this;
     }
 
     /**
@@ -46,18 +48,22 @@ class Sms_api_model extends Array_model
 
     /**
      * @param string $sendUrl
+     * @return Sms_api_model
      */
     public function setSendUrl($sendUrl)
     {
         $this->sendUrl = $sendUrl;
+        return $this;
     }
 
     /**
      * @param int $maxFeedResults
+     * @return Sms_api_model
      */
     public function setMaxFeedResults($maxFeedResults)
     {
         $this->maxFeedResults = $maxFeedResults;
+        return $this;
     }
 
     /**
