@@ -18,7 +18,7 @@ services:
     volumes:
       - ./app:/app
       - /home/${USER}/.ssh/id_rsa:/root/.ssh/id_rsa
-    build: ./web/
+    build: ./docker/web/
     command: /install.sh
 
   db:

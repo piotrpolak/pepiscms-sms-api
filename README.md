@@ -11,9 +11,9 @@ It combines both [PepisCMS](https://github.com/piotrpolak/pepiscms) and
 
 # Preview
 
-![List](screens/screen-list.png)
+![List](docs/screens/screen-list.png)
 
-![Send message](screens/screen-send-message.png)
+![Send message](docs/screens/screen-send-message.png)
 
 ## Setup steps
 
