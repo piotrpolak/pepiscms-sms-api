@@ -92,6 +92,8 @@ class Sms_apiAdmin extends AdminCRUDController
             1 => $this->lang->line('global_dialog_yes')
         );
 
+        $blur_messages_in_datagrid = $that->config->item('sms_api_blur_message_in_datagrid');
+
         $definition = CrudDefinitionBuilder::create()
             ->withField('address')
                 ->withFilterType(DataGrid::FILTER_BASIC)
@@ -119,11 +121,10 @@ class Sms_apiAdmin extends AdminCRUDController
                 ->withInputType(FormBuilder::TEXTAREA)
                 ->addValidationRule('required')
                 ->addValidationRule('max_length[480]')
-                ->withGridFormattingCallback(function($value, $line) use($that) {
-                    if($that->config->item('sms_api_send_url')) {
+                ->withGridFormattingCallback(function($value, $line) use($blur_messages_in_datagrid) {
+                    if($blur_messages_in_datagrid) {
                         return preg_replace('/[a-zA-Z]/', '.', $value);
                     }
-
                     return $value;
                 })
             ->end()
