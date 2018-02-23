@@ -1,5 +1,15 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * @property FormBuilder $formbuilder
+ * @property DataGrid $datagrid
+ * @property PEPISCMS_Loader $load
+ * @property PEPISCMS_Config $config
+ * @property PEPISCMS_Lang $lang
+ * @property PEPISCMS_Input $input
+ *
+ * @property Sms_api_model $Sms_api_model
+ */
 class Sms_apiAdmin extends AdminCRUDController
 {
     public function __construct()
@@ -17,7 +27,6 @@ class Sms_apiAdmin extends AdminCRUDController
             ->setMaxFeedResults($this->config->item('sms_api_max_feed_results'))
             ->setCacheTtl($this->config->item('sms_api_cache_ttl'));
 
-
         $that = $this;
 
         $this->setFeedObject($this->Sms_api_model)
@@ -32,7 +41,7 @@ class Sms_apiAdmin extends AdminCRUDController
             ->setPopupEnabled(FALSE)
             ->setOrderable(FALSE)
             ->setExportable(TRUE, function ($resulting_line) {
-                unset($resulting_line['id']);
+                unset($resulting_line['id']); // Do not export id field
                 return $resulting_line;
             })
             ->setMetaOrderField('id', $this->lang->line($module_name . '_id'))
@@ -112,7 +121,7 @@ class Sms_apiAdmin extends AdminCRUDController
                 ->addValidationRule('max_length[480]')
                 ->withGridFormattingCallback(function($value, $line) use($that) {
                     if($that->config->item('sms_api_send_url')) {
-                        return preg_replace("/[a-zA-Z]/", '.', $value);
+                        return preg_replace('/[a-zA-Z]/', '.', $value);
                     }
 
                     return $value;

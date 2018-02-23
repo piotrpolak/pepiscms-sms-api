@@ -21,6 +21,22 @@ class Sms_api_model extends Array_model
     private $maxFeedResults = 30;
 
     /**
+     * @inheritdoc
+     */
+    public function saveById($id, $data)
+    {
+        throw new LogicException('Operation not supported');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deleteById($id)
+    {
+        throw new LogicException('Operation not supported');
+    }
+
+    /**
      * @return string
      */
     public function getFeedUrl()
@@ -100,7 +116,7 @@ class Sms_api_model extends Array_model
     public function sendMessage($address, $message)
     {
         $contents = $this->makePost(array(
-            'to' => "+" . $address,
+            'to' => '+' . $address,
             'message' => $message
         ), $this->getSendUrl());
 
