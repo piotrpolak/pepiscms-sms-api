@@ -24,6 +24,7 @@ It combines both [PepisCMS](https://github.com/piotrpolak/pepiscms) and
     ```
 
 * Open the installation script in browser at [http://localhost/install.php](http://localhost/install.php)
+    The default credentials are `demo@example.com` / `demodemo`
 
 * Clean up the environment:
 

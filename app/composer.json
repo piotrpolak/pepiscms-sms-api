@@ -1,25 +1,15 @@
 {
   "name": "piotrpolak/sms-api-cms-client",
   "type": "project",
-  "license": "Proprietary",
+  "license": "MIT",
   "authors": [
     {
       "name": "Piotr Polak",
       "email": "piotr@polak.ro"
     }
   ],
-  "minimum-stability": "dev",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:piotrpolak/pepiscms.git"
-    },
-    {
-      "type": "vcs",
-      "url": "git@github.com:piotrpolak/pepiscms-3rdparty.git"
-    }
-  ],
+  "minimum-stability": "stable",
   "require": {
-    "piotrpolak/pepiscms": "dev-master"
+    "piotrpolak/pepiscms": "^1.0.0"
   }
 }
